@@ -32,9 +32,9 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
           <label className="w-32 text-sm font-medium">Invoice No :</label>
           <input 
             name="invoiceNo" 
-            value={invoiceData.invoiceNo} 
-            onChange={onChange} 
-            className="flex-1 border-b border-gray-300 focus:border-[#9F29B5] outline-none p-1 text-sm bg-transparent" 
+            value={invoiceData.invoiceNo}
+            readOnly
+            className="flex-1 border-b border-gray-200 outline-none p-1 text-sm bg-[#fcfaff] text-[#9F29B5] font-bold cursor-not-allowed"
           />
         </div>
         <div className="flex items-center gap-4">
