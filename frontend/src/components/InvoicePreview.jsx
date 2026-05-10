@@ -13,13 +13,18 @@ export default function InvoicePreview({ invoiceData }) {
 
   return (
     <>
-      <div className="w-full lg:w-[480px] bg-white p-10 rounded-xl shadow-xl border border-gray-100 h-fit sticky top-28 font-sans">
-        <div className="flex items-center gap-4 mb-6">
-          <img src={logo} alt="Logo" className="h-10" />
-          <h2 className="text-2xl font-bold">Invoice Mate</h2>
+      <div
+      id="invoice-download" 
+      style={{ backgroundColor: '#ffffff',width: '480px' }}
+      className="bg-white p-10 rounded-xl shadow-xl border border-gray-100 h-fit sticky top-28 font-sans">
+        <div className="flex flex-row items-center gap-4 mb-6 min-w-max">
+          <img src={logo} alt="Logo" className="h-10 w-auto " />
+          <h2 className="text-2xl font-bold whitespace-nowrap">Invoice Mate</h2>
         </div>
 
-        <div className="border border-[#E1C6FC] rounded-lg p-6 mb-8 text-xs relative overflow-hidden">
+        <div 
+  style={{ borderColor: '#000000' }} 
+  className="border rounded-lg p-6 mb-8 text-xs relative overflow-hidden">
           <div className="mb-4 text-gray-500">Invoice No : <span className="text-black font-bold">{invoiceData.invoiceNo}</span></div>
           <div className="grid grid-cols-2 gap-8">
             <div>
@@ -47,7 +52,7 @@ export default function InvoicePreview({ invoiceData }) {
           </div>
         </div>
 
-        <div className="bg-[#E1C6FC] px-4 py-1.5 rounded-md text-sm font-semibold mb-4 text-gray-800">Line Items</div>
+        
         <div className="space-y-4 mb-8">
           <div className="grid grid-cols-4 text-[10px] text-gray-400 uppercase tracking-widest border-b pb-1">
             <span>Description</span><span className="text-center">Qty</span><span className="text-center">Price</span><span className="text-right">Total</span>
@@ -74,7 +79,12 @@ export default function InvoicePreview({ invoiceData }) {
           <div className="flex justify-between text-gray-600"><span>Sub Total :</span><span className="font-bold text-black">Rs. {(Number(subtotal) || 0).toFixed(2)}</span></div>
           <div className="flex justify-between text-gray-600"><span>Applied Tax :</span><span className="font-bold text-black">Rs. {taxAmount.toFixed(2)}</span></div>
           <div className="flex justify-between text-gray-600 border-b pb-2"><span>Discount :</span><span className="font-bold text-black">Rs. {discountAmount.toFixed(2)}</span></div>
-          <div className="flex justify-between text-lg font-black pt-2 text-black"><span>Grand Total :</span><span>Rs. {totalAmount.toFixed(2)}</span></div>
+           <div className="flex justify-between items-center w-full pt-2 mt-2 border-t border-gray-200">
+  <span className="text-lg font-black text-black whitespace-nowrap">Grand Total :</span>
+  <span className="text-lg font-black text-black whitespace-nowrap">
+    Rs. {totalAmount.toFixed(2)}
+  </span>
+</div>
         </div>
 
         <div className="mt-10 pt-4 border-t border-gray-100">

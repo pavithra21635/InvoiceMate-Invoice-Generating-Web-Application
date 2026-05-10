@@ -4,6 +4,8 @@ import InvoicePreview from "../components/InvoicePreview";
 import { MdPictureAsPdf,MdSave } from "react-icons/md";
 import Navbar from "../components/Navbar";
 import axios from "axios";
+import { domToCanvas } from 'modern-screenshot';
+import jsPDF from "jspdf";
 
 
 export default function InvoicePage() {
@@ -90,7 +92,10 @@ export default function InvoicePage() {
       const response = await axios.post("http://localhost:5000/api/invoices", payload);
       
       if (response.status === 201) {
-        alert("✅ Invoice saved successfully to MongoDB!");
+
+        await downloadPDF();
+       
+        
 
         
       setInvoiceData(INITIAL_INVOICE_STATE);
@@ -105,7 +110,29 @@ export default function InvoicePage() {
     }
   };
 
+
+     const downloadPDF = async () => {
+  const node = document.getElementById('invoice-download');
   
+  try {
+    
+    const canvas = await domToCanvas(node, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save(`${invoiceData.invoiceNo || 'Invoice'}.pdf`);
+  } catch (error) {
+    console.error('Snapshot failed:', error);
+  }
+};
 
   return (
     <div className="flex min-h-screen bg-[#f8f9fb] font-sans">
@@ -120,7 +147,7 @@ export default function InvoicePage() {
           onClick={saveInvoice}
            className="flex items-center gap-2 bg-[#9F29B5] text-white px-4 py-2 rounded-md shadow-md hover:bg-[#8e24a3] transition-colors font-bold text-sm">
             <MdPictureAsPdf size={20} />
-            SAVE & GENERATE PDF
+            SAVE & DOWNLOAD PDF
           </button>
         </div>
 
