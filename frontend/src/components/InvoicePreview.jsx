@@ -2,7 +2,11 @@ import logo from "../assets/Logo.png";
 
 export default function InvoicePreview({ invoiceData }) {
 
-  const subtotal = invoiceData.items.reduce((acc, item) => acc + (item.quantity * item.unitPrice), 0);
+  const subtotal = invoiceData.items.reduce((acc, item) => {
+  const qty = Number(item.quantity) || 0;
+  const price = Number(item.unitPrice) || 0;
+  return acc + (qty * price);
+   }, 0);
   const taxAmount = subtotal * (invoiceData.taxPercentage / 100);
   const discountAmount = subtotal * (invoiceData.discountPercentage / 100);
   const totalAmount = subtotal + taxAmount - discountAmount;
@@ -48,18 +52,26 @@ export default function InvoicePreview({ invoiceData }) {
           <div className="grid grid-cols-4 text-[10px] text-gray-400 uppercase tracking-widest border-b pb-1">
             <span>Description</span><span className="text-center">Qty</span><span className="text-center">Price</span><span className="text-right">Total</span>
           </div>
-          {invoiceData.items.map((item, index) => (
-            <div key={index} className="grid grid-cols-4 text-xs font-medium border-b border-gray-50 pb-2">
-              <span className="truncate pr-2">{item.description || "Item"}</span>
-              <span className="text-center">{item.quantity}</span>
-              <span className="text-center">{item.unitPrice.toFixed(2)}</span>
-              <span className="text-right">{(item.quantity * item.unitPrice).toFixed(2)}</span>
-            </div>
-          ))}
+          {invoiceData.items.map((item, index) => {
+          
+            const qty = Number(item.quantity) || 0;
+            const price = Number(item.unitPrice) || 0;
+            const itemTotal = qty * price;
+
+            return (
+              <div key={index} className="grid grid-cols-4 text-xs font-medium border-b border-gray-50 pb-2">
+                <span className="truncate pr-2">{item.description || "Item"}</span>
+                <span className="text-center">{qty}</span>
+                <span className="text-center">{price.toFixed(2)}</span> 
+                <span className="text-right">{itemTotal.toFixed(2)}</span>
+              </div>
+            );
+          })}
+         
         </div>
 
         <div className="space-y-2 text-sm">
-          <div className="flex justify-between text-gray-600"><span>Sub Total :</span><span className="font-bold text-black">Rs. {subtotal.toFixed(2)}</span></div>
+          <div className="flex justify-between text-gray-600"><span>Sub Total :</span><span className="font-bold text-black">Rs. {(Number(subtotal) || 0).toFixed(2)}</span></div>
           <div className="flex justify-between text-gray-600"><span>Applied Tax :</span><span className="font-bold text-black">Rs. {taxAmount.toFixed(2)}</span></div>
           <div className="flex justify-between text-gray-600 border-b pb-2"><span>Discount :</span><span className="font-bold text-black">Rs. {discountAmount.toFixed(2)}</span></div>
           <div className="flex justify-between text-lg font-black pt-2 text-black"><span>Grand Total :</span><span>Rs. {totalAmount.toFixed(2)}</span></div>
