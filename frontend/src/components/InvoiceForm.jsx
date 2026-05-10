@@ -1,7 +1,9 @@
 import { MdDelete } from "react-icons/md";
 
 export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
-  // Helper to handle item changes specifically
+
+  const today = new Date().toISOString().split("T")[0];
+ 
   const handleItemChange = (index, field, value) => {
     const updatedItems = [...invoiceData.items];
     updatedItems[index][field] = value;
@@ -18,6 +20,9 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
   const removeItem = (index) => {
     const updatedItems = invoiceData.items.filter((_, i) => i !== index);
     setInvoiceData({ ...invoiceData, items: updatedItems });
+
+   
+    
   };
 
   return (
@@ -43,6 +48,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
             type="date" 
             name="issuedDate" 
             value={invoiceData.issuedDate}
+            min={today}
             onChange={onChange} 
             className="flex-1 border-b border-gray-300 focus:border-[#9F29B5] outline-none p-1 text-sm text-gray-400" 
           />
@@ -53,6 +59,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
             type="date" 
             name="dueDate" 
             value={invoiceData.dueDate}
+            min={invoiceData.issuedDate || today}
             onChange={onChange} 
             className="flex-1 border-b border-gray-300 focus:border-[#9F29B5] outline-none p-1 text-sm text-gray-400" 
           />

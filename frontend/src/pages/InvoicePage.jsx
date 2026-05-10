@@ -21,6 +21,15 @@ export default function InvoicePage() {
   });
 
   useEffect(() => {
+
+        const today = new Date().toISOString().split("T")[0];
+      
+    
+      setInvoiceData(prev => ({ 
+        ...prev, 
+        issuedDate: prev.issuedDate || today 
+      }));
+
     const fetchNextNumber = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/invoices/next-number");
@@ -32,6 +41,9 @@ export default function InvoicePage() {
 
     fetchNextNumber();
   }, []);
+
+
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
