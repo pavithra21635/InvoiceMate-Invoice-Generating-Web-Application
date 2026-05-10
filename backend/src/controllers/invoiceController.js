@@ -1,7 +1,18 @@
 const Invoice = require("../models/Invoice");
+const Counter = require("../models/Counter");
 
 exports.createInvoice = async (req, res) => {
   try {
+
+    const counter = await Counter.findOneAndUpdate(
+      { id: "invoiceId" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true } // Create it if it doesn't exist
+    );
+
+    const sequenceNumber = counter.seq.toString().padStart(3, '0');
+    const autoInvoiceNumber = `INV-${sequenceNumber}`;
+
     const { items, taxPercentage, discountPercentage } = req.body;
 
     const subtotal = items.reduce((acc, item) => {
@@ -18,6 +29,7 @@ exports.createInvoice = async (req, res) => {
     
     const newInvoice = new Invoice({
       ...req.body,
+      invoiceNumber: autoInvoiceNumber,
       subtotal,      
       taxAmount,      
       discountAmount, 
@@ -37,6 +49,17 @@ exports.getInvoices = async (req, res) => {
    
     const invoices = await Invoice.find().sort({ createdAt: -1 });
     res.status(200).json(invoices);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getNextInvoiceNumber = async (req, res) => {
+  try {
+    const counter = await Counter.findOne({ id: "invoiceId" });
+    const nextSeq = counter ? counter.seq + 1 : 1;
+    const formattedNumber = `INV-${nextSeq.toString().padStart(3, '0')}`;
+    res.status(200).json({ nextNumber: formattedNumber });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
