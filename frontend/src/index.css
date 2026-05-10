@@ -4,7 +4,7 @@
   --font-sans: "Arial", "Helvetica", "sans-serif";
 }
 
-/* This makes it the default for the whole app */
+
 body {
   font-family: var(--font-sans);
 }
