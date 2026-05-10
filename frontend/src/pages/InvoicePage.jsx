@@ -14,9 +14,9 @@ export default function InvoicePage() {
     clientName: "",
     clientAddress: "",
     clientEmail: "",
-    items: [{ description: "", quantity: 0, unitPrice: 0 }],
-    discountPercentage: 0,
-    taxPercentage: 0,
+    items: [{ description: "", quantity: "", unitPrice: "" }],
+    discountPercentage: "",
+    taxPercentage: "",
     notes: ""
   });
 

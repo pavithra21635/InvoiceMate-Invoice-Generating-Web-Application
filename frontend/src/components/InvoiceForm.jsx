@@ -6,6 +6,12 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
  
   const handleItemChange = (index, field, value) => {
     const updatedItems = [...invoiceData.items];
+
+    if (field === "quantity" || field === "unitPrice"  || field ==="discountPercentage" || field ==="taxPercentage" ) {
+     
+        if (value !== "" && value < 0) return; 
+    }
+
     updatedItems[index][field] = value;
     setInvoiceData({ ...invoiceData, items: updatedItems });
   };
@@ -127,7 +133,8 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
               </td>
               <td className="px-2">
                 <input 
-                  type="number" 
+                  type="number"
+                  min="0" 
                   value={item.quantity} 
                   onChange={(e) => handleItemChange(index, 'quantity', Number(e.target.value))} 
                   className="w-16 border rounded text-center py-1 mx-auto block outline-none" 
@@ -136,6 +143,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
               <td className="px-2">
                 <input 
                   type="number" 
+                  min="0"
                   value={item.unitPrice} 
                   onChange={(e) => handleItemChange(index, 'unitPrice', Number(e.target.value))} 
                   className="w-24 border rounded text-center py-1 mx-auto block outline-none" 
@@ -167,6 +175,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
           <input 
             type="number"
             name="discountPercentage" 
+            min="0"
             value={invoiceData.discountPercentage}
             onChange={onChange} 
             placeholder="Enter Discount Here" 
@@ -178,6 +187,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
           <input 
             type="number"
             name="taxPercentage" 
+            min="0"
             value={invoiceData.taxPercentage}
             onChange={onChange} 
             placeholder="Enter Tax Here" 
