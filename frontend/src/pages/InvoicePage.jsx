@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InvoiceForm from "../components/InvoiceForm";
 import InvoicePreview from "../components/InvoicePreview";
 import { MdPictureAsPdf,MdSave } from "react-icons/md";
@@ -19,6 +19,19 @@ export default function InvoicePage() {
     taxPercentage: 0,
     notes: ""
   });
+
+  useEffect(() => {
+    const fetchNextNumber = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/invoices/next-number");
+        setInvoiceData(prev => ({ ...prev, invoiceNo: response.data.nextNumber }));
+      } catch (error) {
+        console.error("Failed to fetch invoice number:", error);
+      }
+    };
+
+    fetchNextNumber();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
