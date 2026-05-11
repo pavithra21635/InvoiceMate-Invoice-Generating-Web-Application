@@ -118,7 +118,7 @@ export default function InvoiceForm({ invoiceData, onChange, setInvoiceData }) {
             <th className="py-2 font-medium">Description</th>
             <th className="font-medium text-center">Quantity</th>
             <th className="font-medium text-center">Unit Price(Rs)</th>
-            <th className="font-medium text-center">Action</th>
+            
           </tr>
         </thead>
         <tbody>

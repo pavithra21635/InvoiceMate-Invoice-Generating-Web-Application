@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
+import InvoiceList from "../components/InvoiceList";
 
 export default function Dashboard() {
   const [currency, setCurrency] = useState("LKR");
@@ -11,7 +12,7 @@ export default function Dashboard() {
       <Navbar />
 
       <main className="flex-1 mt-[70px] p-5 md:p-10 transition-all duration-300 ml-0 md:ml-64">
-        
+        <InvoiceList />
       </main>
     </div>
   );
