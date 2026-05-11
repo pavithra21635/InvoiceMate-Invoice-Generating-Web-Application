@@ -7,7 +7,7 @@ exports.createInvoice = async (req, res) => {
     const counter = await Counter.findOneAndUpdate(
       { id: "invoiceId" },
       { $inc: { seq: 1 } },
-      { new: true, upsert: true } // Create it if it doesn't exist
+      { new: true, upsert: true }
     );
 
     const sequenceNumber = counter.seq.toString().padStart(3, '0');
@@ -44,7 +44,7 @@ exports.createInvoice = async (req, res) => {
   }
 };
 
-exports.getInvoices = async (req, res) => {
+exports.getAllInvoices = async (req, res) => {
   try {
    
     const invoices = await Invoice.find().sort({ createdAt: -1 });
@@ -60,6 +60,21 @@ exports.getNextInvoiceNumber = async (req, res) => {
     const nextSeq = counter ? counter.seq + 1 : 1;
     const formattedNumber = `INV-${nextSeq.toString().padStart(3, '0')}`;
     res.status(200).json({ nextNumber: formattedNumber });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteInvoice = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const deletedInvoice = await Invoice.findByIdAndDelete(id);
+
+    if (!deletedInvoice) {
+      return res.status(404).json({ message: "Invoice not found" });
+    }
+
+    res.status(200).json({ message: "Invoice deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
