@@ -42,7 +42,7 @@ Follow these steps to get the project running on your machine:
 
 ### 2. Clone the Repository
 * git clone https://github.com/pavithra21635/InvoiceMate-Invoice-Generating-Web-Application.git
-*cd invoiceMate-invoice-generating-web-application
+* cd invoiceMate-invoice-generating-web-application
 
 ### 3. Background Configuration
 
@@ -69,14 +69,14 @@ Follow these steps to get the project running on your machine:
 
 Current Limitations:
 
-   *PDF generation is handled client-side; extremely long invoices may split across pages unexpectedly.
+   * PDF generation is handled client-side; extremely long invoices may split across pages unexpectedly.
 
 Future Ideas:
 
-  *User Authentication: Implementing JWT for private user accounts.
-  *Multi-Currency Support: Allowing users to switch between LKR, USD, and EUR.
-  *Dashboard Analytics: Visual charts showing monthly revenue and pending invoices.
-  *Cloud Storage: Moving PDF storage from local downloads to AWS S3.
+  * User Authentication: Implementing JWT for private user accounts.
+  * Multi-Currency Support: Allowing users to switch between LKR, USD, and EUR.
+  * Dashboard Analytics: Visual charts showing monthly revenue and pending invoices.
+  * Cloud Storage: Moving PDF storage from local downloads to AWS S3.
 
 
 
