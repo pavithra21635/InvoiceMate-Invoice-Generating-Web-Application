@@ -41,8 +41,7 @@ Follow these steps to get the project running on your machine:
 * Install [MongoDB Community Server](https://www.mongodb.com/try/download/community)
 
 ### 2. Clone the Repository
-```bash
-git clone [https://github.com/pavithra21635/InvoiceMate-Invoice-Generating-Web-Application.git](https://github.com/pavithra21635/InvoiceMate-Invoice-Generating-Web-Application.git)
+git clone https://github.com/pavithra21635/InvoiceMate-Invoice-Generating-Web-Application.git
 cd invoiceMate-invoice-generating-web-application
 
 ### 3. Background Configuration
