@@ -98,7 +98,20 @@ export default function InvoicePage() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setInvoiceData({ ...invoiceData, [name]: value });
+    
+    if (name === "clientName") {
+    
+    const lettersOnly = /^[a-zA-Z\s]*$/;
+    
+    if (!lettersOnly.test(value)) {
+      alert("Please enter letters and spaces only for the client name.");
+      return; 
+    }
+  }
+
+  setInvoiceData((prev) => ({ ...prev, [name]: value }));
+    
+    
   };
 
   const saveInvoice = async () => {
