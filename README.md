@@ -78,6 +78,8 @@ Future Ideas:
   * Dashboard Analytics: Visual charts showing monthly revenue and pending invoices.
   * Cloud Storage: Moving PDF storage from local downloads to AWS S3.
 
+* Figma link - https://www.figma.com/design/KwdJ8CCPV8KRQHG79C4BZ6/Untitled?node-id=0-1&t=XxfD3UgPXvYWgRhJ-1
+
 
 
 
