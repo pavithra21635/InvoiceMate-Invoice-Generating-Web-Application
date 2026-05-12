@@ -35,6 +35,8 @@ discountAmount: { type: Number, default: 0 },
   totalAmount: { type: Number, required: true },
 
   notes: { type: String },
+  deletedAt: { type: Date, default: null } 
 }, { timestamps: true });
+
 
 module.exports = mongoose.model("Invoice", InvoiceSchema);
