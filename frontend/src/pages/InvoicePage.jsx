@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import InvoiceForm from "../components/InvoiceForm";
 import InvoicePreview from "../components/InvoicePreview";
 import { MdPictureAsPdf,MdSave } from "react-icons/md";
@@ -9,6 +10,10 @@ import jsPDF from "jspdf";
 
 
 export default function InvoicePage() {
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  
   const [invoiceData, setInvoiceData] = useState({
     invoiceNo: "",
     issuedDate: "",
@@ -22,7 +27,7 @@ export default function InvoicePage() {
     notes: ""
   });
 
-   const INITIAL_INVOICE_STATE = {
+  const INITIAL_INVOICE_STATE = {
   invoiceNo: "",
   issuedDate: new Date().toISOString().split("T")[0],
   dueDate: "",
@@ -33,29 +38,38 @@ export default function InvoicePage() {
   discountPercentage: "",
   taxPercentage: "",
   notes: ""
-};
+  };
+
 
   useEffect(() => {
 
-        const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toISOString().split("T")[0];
+
+    if (location.state && location.state.draftData) {
+      setInvoiceData(location.state.draftData);
       
-    
-      setInvoiceData(prev => ({ 
-        ...prev, 
-        issuedDate: prev.issuedDate || today 
-      }));
-
-    const fetchNextNumber = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/invoices/next-number");
-        setInvoiceData(prev => ({ ...prev, invoiceNo: response.data.nextNumber }));
-      } catch (error) {
-        console.error("Failed to fetch invoice number:", error);
-      }
-    };
-
-    fetchNextNumber();
-  }, []);
+      navigate(location.pathname, { replace: true, state: {} });
+    } 
+    else {
+      const fetchNextNumber = async () => {
+        try {
+          const response = await axios.get("http://localhost:5000/api/invoices/next-number");
+          
+          setInvoiceData(prev => ({ 
+            ...prev, 
+            invoiceNo: response.data.nextNumber,
+            issuedDate: prev.issuedDate || today 
+          }));
+        } catch (error) {
+          console.error("Failed to fetch invoice number:", error);
+          
+          setInvoiceData(prev => ({ ...prev, issuedDate: prev.issuedDate || today }));
+        }
+      };
+      
+      fetchNextNumber();
+    }
+  }, [location.state, navigate]);
 
 
   
@@ -134,14 +148,36 @@ export default function InvoicePage() {
   }
 };
 
+const saveAsDraft = () => {
+  const existingDrafts = JSON.parse(localStorage.getItem("invoice_drafts") || "[]");
+  
+  const draftData = {
+    ...invoiceData,
+    draftId: invoiceData.draftId || Date.now(), 
+    lastSaved: new Date().toLocaleString()
+  };
+
+  const updatedDrafts = invoiceData.draftId 
+    ? existingDrafts.map(d => d.draftId === draftData.draftId ? draftData : d)
+    : [draftData, ...existingDrafts];
+
+  localStorage.setItem("invoice_drafts", JSON.stringify(updatedDrafts));
+  alert("Draft saved to browser storage!");
+};
+
   return (
     <div className="flex min-h-screen bg-[#f8f9fb] font-sans">
       <Navbar />
 
       <main className="flex-1 transition-all duration-300 ml-0 md:ml-64 pt-[90px]">
         <div className="flex justify-end gap-4 px-8 py-4">
-
-          
+          <button
+            onClick={saveAsDraft}
+            className="flex items-center gap-2 bg-white text-[#9F29B5] border-2 border-[#9F29B5] px-6 py-2 rounded-md shadow-sm hover:bg-purple-50 transition-colors font-bold text-sm"
+          >
+            <MdSave size={20} />
+            SAVE AS DRAFT
+          </button>
 
           <button
           onClick={saveInvoice}

@@ -41,10 +41,10 @@ export default function InvoiceList() {
             <th className="pb-3 font-medium">Issue Date</th>
             <th className="pb-3 font-medium">Due Date</th>
             <th className="pb-3 font-medium">Client Name</th>
-            <th className="pb-3 font-medium whitespace-nowrap">Client Address</th>
-            <th className="pb-3 font-medium whitespace-nowrap">Client Email</th>
-            <th className="pb-3 font-medium whitespace-nowrap">Tax Percentage</th>
-            <th className="pb-3 font-medium whitespace-nowrap">Discount Percentage</th>
+            <th className="pb-3 font-medium ">Client Address</th>
+            <th className="pb-3 font-medium ">Client Email</th>
+            <th className="pb-3 font-medium ">Tax Percentage</th>
+            <th className="pb-3 font-medium ">Discount Percentage</th>
             <th className="pb-3 font-medium">Sub Total</th>
             <th className="pb-3 font-medium">Total</th>
             <th className="pb-3 font-medium">notes</th>
@@ -61,8 +61,8 @@ export default function InvoiceList() {
                 <td className="py-4 text-gray-600">{inv.client.name}</td>
                 <td className="py-4 text-gray-600">{inv.client.address}</td>
                 <td className="py-4 text-gray-600">{inv.client.email}</td>
-                <td className="py-4 text-gray-600">{inv.tax}%</td>
-                <td className="py-4 text-gray-600">{inv.discount}%</td>
+                <td className="py-4 text-gray-600">{inv.taxPercentage}%</td>
+                <td className="py-4 text-gray-600">{inv.discountPercentage}%</td>
                 <td className="py-4 font-bold text-black">{inv.subtotal.toFixed(2)}</td>
                 <td className="py-4 font-bold text-black">{inv.totalAmount.toFixed(2)}</td>
                 <td className="py-4 text-gray-600">{inv.notes || "-"}</td>
