@@ -47,7 +47,7 @@ exports.createInvoice = async (req, res) => {
 exports.getAllInvoices = async (req, res) => {
   try {
    
-    const invoices = await Invoice.find().sort({ createdAt: -1 });
+    const invoices = await Invoice.find({ deletedAt: null }).sort({ createdAt: -1 });
     res.status(200).json(invoices);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -68,11 +68,13 @@ exports.getNextInvoiceNumber = async (req, res) => {
 exports.deleteInvoice = async (req, res) => {
   try {
     const { id } = req.params; 
-    const deletedInvoice = await Invoice.findByIdAndDelete(id);
+    const updatedInvoice = await Invoice.findByIdAndUpdate(
+      id,
+      { deletedAt: new Date() }, 
+      { new: true }
+    );
 
-    if (!deletedInvoice) {
-      return res.status(404).json({ message: "Invoice not found" });
-    }
+    if (!updatedInvoice) return res.status(404).json({ message: "Invoice not found" });
 
     res.status(200).json({ message: "Invoice deleted successfully" });
   } catch (err) {
