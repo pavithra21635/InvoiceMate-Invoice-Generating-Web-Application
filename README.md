@@ -59,6 +59,12 @@ Follow these steps to get the project running on your machine:
 * Install dependencies: npm install
 * Start the application: npm start
 
+### 5.Root configuration to run concurrently
+
+* go to root folder
+* Install dependencies: npm install
+* Start the application: npm run dev
+
 ## 📸 Screenshots
 
 <img width="1846" height="880" alt="image" src="https://github.com/user-attachments/assets/d4e7f13f-d612-4a5c-8467-7e3fb51e331e" />
