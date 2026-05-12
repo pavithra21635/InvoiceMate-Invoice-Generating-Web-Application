@@ -51,6 +51,14 @@ export default function InvoicePage() {
       navigate(location.pathname, { replace: true, state: {} });
     } 
     else {
+    const savedSession = localStorage.getItem("active_invoice_session");
+    const parsedSession = savedSession ? JSON.parse(savedSession) : null;
+
+    // Priority 2: Survival on Refresh (Only if the session has an actual Invoice Number)
+    if (parsedSession && parsedSession.invoiceNo) {
+      setInvoiceData(parsedSession);
+    }
+    else {
       const fetchNextNumber = async () => {
         try {
           const response = await axios.get("http://localhost:5000/api/invoices/next-number");
@@ -69,7 +77,18 @@ export default function InvoicePage() {
       
       fetchNextNumber();
     }
+  }
   }, [location.state, navigate]);
+
+  useEffect(() => {
+  // Only save if the data is different from the initial empty state
+  if (JSON.stringify(invoiceData) !== JSON.stringify(INITIAL_INVOICE_STATE)) {
+    localStorage.setItem("active_invoice_session", JSON.stringify(invoiceData));
+  }
+}, [invoiceData]);
+
+
+  
 
 
   
@@ -110,7 +129,7 @@ export default function InvoicePage() {
         await downloadPDF();
        
         
-
+localStorage.removeItem("active_invoice_session");
         
       setInvoiceData(INITIAL_INVOICE_STATE);
       
@@ -170,7 +189,21 @@ const saveAsDraft = () => {
       <Navbar />
 
       <main className="flex-1 transition-all duration-300 ml-0 md:ml-64 pt-[90px]">
+
+
         <div className="flex justify-end gap-4 px-8 py-4">
+
+          <button
+            onClick={() => {
+              if(window.confirm("Are you sure you want to clear all fields?")) {
+                localStorage.removeItem("active_invoice_session");
+                window.location.reload(); // Simplest way to trigger a fresh ID fetch
+              }
+            }}
+            className="text-gray-400 hover:text-red-500 text-xs font-medium underline">
+            Discard & Start New
+          </button>
+          
           <button
             onClick={saveAsDraft}
             className="flex items-center gap-2 bg-white text-[#9F29B5] border-2 border-[#9F29B5] px-6 py-2 rounded-md shadow-sm hover:bg-purple-50 transition-colors font-bold text-sm"
