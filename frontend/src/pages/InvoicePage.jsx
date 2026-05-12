@@ -54,7 +54,6 @@ export default function InvoicePage() {
     const savedSession = localStorage.getItem("active_invoice_session");
     const parsedSession = savedSession ? JSON.parse(savedSession) : null;
 
-    // Priority 2: Survival on Refresh (Only if the session has an actual Invoice Number)
     if (parsedSession && parsedSession.invoiceNo) {
       setInvoiceData(parsedSession);
     }
@@ -80,18 +79,16 @@ export default function InvoicePage() {
   }
   }, [location.state, navigate]);
 
+
+
   useEffect(() => {
-  // Only save if the data is different from the initial empty state
-  if (JSON.stringify(invoiceData) !== JSON.stringify(INITIAL_INVOICE_STATE)) {
-    localStorage.setItem("active_invoice_session", JSON.stringify(invoiceData));
-  }
-}, [invoiceData]);
+    if (JSON.stringify(invoiceData) !== JSON.stringify(INITIAL_INVOICE_STATE)) {
+      localStorage.setItem("active_invoice_session", JSON.stringify(invoiceData));
+    }
+  }, [invoiceData]);
 
 
-  
 
-
-  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -197,7 +194,7 @@ const saveAsDraft = () => {
             onClick={() => {
               if(window.confirm("Are you sure you want to clear all fields?")) {
                 localStorage.removeItem("active_invoice_session");
-                window.location.reload(); // Simplest way to trigger a fresh ID fetch
+                window.location.reload(); 
               }
             }}
             className="text-gray-400 hover:text-red-500 text-xs font-medium underline">

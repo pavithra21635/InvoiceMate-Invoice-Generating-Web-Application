@@ -20,9 +20,14 @@ export default function InvoiceList() {
   };
 
   const deleteInvoice = async (id) => {
-    if (window.confirm("Are you sure you want to delete this invoice?")) {
+    if (window.confirm("Are you sure you want to delete this invoice? It can be recovered by the admin later.")) {
+      try {
       await axios.delete(`http://localhost:5000/api/invoices/${id}`);
       fetchInvoices(); 
+      } catch (err) {
+      alert("Error archiving invoice.");
+      }
+  
     }
   };
 
