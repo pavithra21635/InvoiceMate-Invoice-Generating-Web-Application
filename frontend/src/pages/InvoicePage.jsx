@@ -41,43 +41,49 @@ export default function InvoicePage() {
   };
 
 
-  useEffect(() => {
+ useEffect(() => {
+  const today = new Date().toISOString().split("T")[0];
 
-    const today = new Date().toISOString().split("T")[0];
-
-    if (location.state && location.state.draftData) {
-      setInvoiceData(location.state.draftData);
+  const initializeInvoice = async () => {
+    try {
       
-      navigate(location.pathname, { replace: true, state: {} });
-    } 
-    else {
-    const savedSession = localStorage.getItem("active_invoice_session");
-    const parsedSession = savedSession ? JSON.parse(savedSession) : null;
+      const response = await axios.get("http://localhost:5000/api/invoices/next-number");
+      const nextNumberFromServer = response.data.nextNumber;
 
-    if (parsedSession && parsedSession.invoiceNo) {
-      setInvoiceData(parsedSession);
-    }
-    else {
-      const fetchNextNumber = async () => {
-        try {
-          const response = await axios.get("http://localhost:5000/api/invoices/next-number");
-          
+  
+      if (location.state && location.state.draftData) {
+        setInvoiceData({
+          ...location.state.draftData,
+         
+          invoiceNo: nextNumberFromServer 
+        });
+        
+        navigate(location.pathname, { replace: true, state: {} });
+      } 
+      else {
+        const savedSession = localStorage.getItem("active_invoice_session");
+        const parsedSession = savedSession ? JSON.parse(savedSession) : null;
+
+        if (parsedSession && parsedSession.invoiceNo) {
+          setInvoiceData(parsedSession);
+        }
+        else {
           setInvoiceData(prev => ({ 
             ...prev, 
-            invoiceNo: response.data.nextNumber,
+            invoiceNo: nextNumberFromServer,
             issuedDate: prev.issuedDate || today 
           }));
-        } catch (error) {
-          console.error("Failed to fetch invoice number:", error);
-          
-          setInvoiceData(prev => ({ ...prev, issuedDate: prev.issuedDate || today }));
         }
-      };
-      
-      fetchNextNumber();
+      }
+    } catch (error) {
+      console.error("Failed to initialize invoice:", error);
+  
+      setInvoiceData(prev => ({ ...prev, issuedDate: prev.issuedDate || today }));
     }
-  }
-  }, [location.state, navigate]);
+  };
+
+  initializeInvoice();
+}, [location.state, navigate]);
 
 
 
@@ -124,9 +130,16 @@ export default function InvoicePage() {
       if (response.status === 201) {
 
         await downloadPDF();
+
+        if (invoiceData.draftId) {
+        const existingDrafts = JSON.parse(localStorage.getItem("invoice_drafts") || "[]");
+        
+        const updatedDrafts = existingDrafts.filter(d => d.draftId !== invoiceData.draftId);
+        localStorage.setItem("invoice_drafts", JSON.stringify(updatedDrafts));
+      }
        
         
-localStorage.removeItem("active_invoice_session");
+      localStorage.removeItem("active_invoice_session");
         
       setInvoiceData(INITIAL_INVOICE_STATE);
       
