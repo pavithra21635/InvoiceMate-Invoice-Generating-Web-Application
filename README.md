@@ -27,7 +27,7 @@ It features a real-time preview, persistence across page refreshes, and automate
 * **PDF Export / Print:**  lets the user download the invoice as a PDF
 * **Soft Deletion:** Invoices are archived with a `deletedAt` timestamp instead of permanent removal.
 * **Dynamic Sequencing:** Automated invoice numbering (INV-001, INV-002) synced with the database.
-* * **Draft System:** Save unfinished invoices to `localStorage` and resume later.
+* **Draft System:** Save unfinished invoices to `localStorage` and resume later.
 * **Persistence:** Form data survives page refreshes using an auto-save mechanism.
 
 ---
@@ -49,9 +49,9 @@ Follow these steps to get the project running on your machine:
 * Navigate to the server folder: cd backend
 * Install dependencies: npm install
 * Create a .env file and add your local URI:
-
-  PORT=5000
-  MONGO_URI=mongodb://127.0.0.1:27017/invoice_mate_db
+ 
+  * PORT=5000
+  * MONGO_URI=mongodb://127.0.0.1:27017/invoice_mate_db
 
 ### 4. Frontend Configuration
 
