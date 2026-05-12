@@ -65,7 +65,7 @@ cd invoiceMate-invoice-generating-web-application
 <img width="1852" height="860" alt="image" src="https://github.com/user-attachments/assets/fb6f8bf3-7c9e-4dfc-99f6-de52f8cdfcdd" />
 <img width="1852" height="872" alt="image" src="https://github.com/user-attachments/assets/c665a49a-b180-45ed-9711-3ae5a40ddacb" />
 
-##⚠️ Known Limitations & Future Improvements
+## ⚠️ Known Limitations & Future Improvements
 
 Current Limitations:
 
